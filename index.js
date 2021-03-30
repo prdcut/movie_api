@@ -1,10 +1,11 @@
 const express = require('express');
   morgan = require('morgan');
+  bodyParser = require('body-parser');
+  uuid = require('uuid');
 
 const app = express();
 
-app.use(morgan('common'));
-
+// In-Memory data
 let topMovies = [
   {
     title: 'Fight Club',
@@ -68,26 +69,73 @@ let topMovies = [
   },
 ];
 
-// GET requests
-app.get('/', (req, res) => {
-  res.send('Welcome to the best movie collection of all times!');
-});
+app.use(morgan(':method :host :url :status :res[content-length] - :response-time ms'));
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
-app.get('/documentation', (req, res) => {
-    res.sendFile('public/documentation.html', { root: __dirname });
-});
-
-app.get('/movies', (req, res) => {
-  res.json(topMovies);
-});
-
-
-// listen for requests
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+morgan.token('host', (req, res) =>{
+  return req.hostname;
 });
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).send('YOU broke something!');
+});
+
+// GET requests
+app.get('/movies', (req, res, next) => {
+  res.send(topMovies);
+});
+
+app.get('/movies/:title', (req, res) => {
+    let title = req.params.title;
+
+    let reqMovie = movies.find((movie) => {
+      return movie.title === title;
+    })
+    if (reqMovie){
+      res.send(reqMovie);
+    }else{
+      res.status(404).send('Movie not found!');
+    }
+});
+
+app.get('/movies/:title/genre',(req, res) => {
+  res.send('This movie is: ');
+});
+
+app.get('movies/:title/director', (req, res) => {
+  res.send('Director is being fetched.');
+});
+
+//POST request
+app.post('/users', (req, res) => {
+  res.send('Registration successful.');
+});
+
+app.post('/movies', (req, res) => {
+  res.send('Movie has been added.');
+});
+
+//PUT requests
+app.put('/movies', (req, res) => {
+  res.send('Movie has been added.');
+});
+
+app.put('/users/:username', (req, res) => {
+  res.send('User information has been updated.')
+});
+
+//DELETE requests
+app.delete('/movies', (req, res) => {
+  res.send('Movie has been removed.')
+});
+
+app.delete('/users', (req, res) =>{
+  res.send('User has been removed.')
+});
+
+//Listen for requests
+app.listen(8080, () => {
+  console.log('Your app is listening on port 8080.');
 });

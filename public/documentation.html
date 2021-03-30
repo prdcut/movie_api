@@ -1,11 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <style>
+    table,
+    tr,
+    th,
+    td{
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 1rem;
+      text-align: left;
+    }
+  </style>
   </head>
   <body>
-    <h1>To build the server-side component of a 'movies' web application. The web
+    <h1>FlixMe</h1>
+    <p>To build the server-side component of a 'movies' web application. The web
 application will provide users with access to information about different
 movies, directors, and genres. Users will be able to sign up, update their
-personal information, and create a list of their favorite movies.</h1>
+personal information, and create a list of their favorite movies.</p>
+    <table>
+      <tr>
+        <th>Business Logic</th>
+        <th>URL</th>
+        <th>HTTP Method</th>
+        <th>Request body data format</th>
+        <th>Response body data format</th>
+      </tr>
+      <tr>
+        <td>Returns a list of all movies.</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON</td>
+      </tr>
+      <tr>
+        <td>Returns all information on the specified movie.</td>
+        <td>/movies/[title]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON</td>
+      </tr>
+      <tr>
+        <td>Returns all information on the specified genre.</td>
+        <td>/movies/[title]/genre</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON</td>
+      </tr>
+      <tr>
+        <td>Returns all information on the specified director.</td>
+        <td>/movies/[title]/director</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>JSON</td>
+      </tr>
+      <tr>
+        <td>Allows new user registration.</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>JSON<br/>
+          <span>
+            {
+              'id': 'id',
+              'username': '[username]',
+              'password': '[password]'
+              'info': {
+                'firstName': '[firstName]',
+                'lastName': '[lastName]'
+              }
+            }
+          </span>
+        </td>
+        <td>Text relaying status</td>
+      </tr>
+      <tr>
+        <td>Allows users to update username.</td>
+        <td>/users/[username]</td>
+        <td>PUT</td>
+        <td>None</td>
+        <td>Text relaying status.</td>
+      </tr>
+      <tr>
+        <td>Allows users to add a movie to their list of favourites.</td>
+        <td>/movies</td>
+        <td>PUT</td>
+        <td>JSON <br />
+          <span>
+            {
+              'movies': {
+                'id': 'id',
+                'info': {
+                  'name': 'name',
+                  ...
+                }
+              }
+            }
+          </span>
+        </td>
+        <td>Text relaying status.</td>
+      </tr>
+      <tr>
+        <td>Allows users to remove a movie to their list of favourites.</td>
+        <td>/movies</td>
+        <td>DELETE</td>
+        <td>JSON <br />
+          <span>
+            {
+              ...
+            }
+          </span>
+        </td>
+        <td>Text relaying status.</td>
+      </tr>
+      <tr>
+        <td>Allows existing user to deregister.</td>
+        <td>/users</td>
+        <td>DELETE</td>
+        <td>JSON <br />
+          <span>
+            {
+              ...
+            }
+          </span>
+        </td>
+        <td>Text relaying status.</td>
+      </tr>
+    </table>
   </body>
+
 </html>
