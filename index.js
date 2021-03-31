@@ -11,61 +11,61 @@ let topMovies = [
     title: 'Fight Club',
     year: '1999',
     director: 'David Fincher',
-    genere:'Drama',
+    genre:'Drama',
   },
   {
     title: 'Call Me By Your Name',
     year: '2017',
     director: 'Luca Guadagnino',
-    genere:'Romance',
+    genre:'Romance',
   },
   {
     title: 'Mala Educación',
     year: '2004',
     director: 'Pedro Almodóvar',
-    genere:'Drama',
+    genre:'Drama',
   },
   {
     title: 'Freier Fall',
     year: '2013',
     director: 'Stephan Lacant',
-    genere:['Romance','Drama'],
+    genre:['Romance','Drama'],
   },
   {
     title: 'Wir Kinder Vom Bahnhof Zoo',
     year: '1981',
     director: 'Uli Edel',
-    genere:['Biography','Drama'],
+    genre:['Biography','Drama'],
   },
   {
     title: 'Good Bye, Lenin!',
     year: '2003',
     director: 'Wolfgang Becker',
-    genere:['Comedy','Drama','Romance'],
+    genre:['Comedy','Drama','Romance'],
   },
   {
     title: 'Die Welle',
     year: '2008',
     director: 'Dennis Gansel',
-    genere:['Thriller','Drama'],
+    genre:['Thriller','Drama'],
   },
   {
     title: 'La Piel Que Habito',
     year: '2011',
     director: 'Pedro Almodóvar',
-    genere:['Thriller','Drama'],
+    genre:['Thriller','Drama'],
   },
   {
     title: 'Pulp Fiction',
     year: '1994',
     director: 'Quentin Tarantino',
-    genere:['Crime','Drama']
+    genre:['Crime','Drama']
   },
   {
     title: 'The Breakfast Club',
     year: '1985',
     director: 'John Hughes',
-    genere:['Comedy','Drama']
+    genre:['Comedy','Drama']
   },
 ];
 
@@ -90,7 +90,7 @@ app.get('/movies', (req, res, next) => {
 app.get('/movies/:title', (req, res) => {
     let title = req.params.title;
 
-    let reqMovie = movies.find((movie) => {
+    let reqMovie = topMovies.find((movie) => {
       return movie.title === title;
     })
     if (reqMovie){
@@ -113,7 +113,7 @@ app.post('/users', (req, res) => {
   res.send('Registration successful.');
 });
 
-app.post('/movies', (req, res) => {
+app.post('/users/:id/favourites/:movie_id', (req, res) => {
   res.send('Movie has been added.');
 });
 
