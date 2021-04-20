@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 
-let movieShcema = mongoose.Schema ({
+let movieSchema = mongoose.Schema ({
   Title: {type: String, required: true},
   Description: {type: String, required: true},
   Genre: {
@@ -22,7 +22,7 @@ let movieShcema = mongoose.Schema ({
   Featured: Boolean
 });
 
-let userSchema = mongoose.Shcema ({
+let userSchema = mongoose.Schema ({
   Username: {type: String, required: true},
   Password: {type: String, required: true},
   Email: {type: String, required: true},
