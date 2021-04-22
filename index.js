@@ -3,7 +3,8 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   mongoose = require('mongoose'),
-  passport = require('passport');
+  passport = require('passport'),
+  cors = require('cors');
 
   require('./passport');
 
@@ -19,6 +20,7 @@ mongoose.connect('mongodb://localhost:27017/flixmeDB', { useNewUrlParser: true, 
 app.use(morgan(':method :host :url :status :res[content-length] - :response-time ms'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(cors());
 
 let auth = require('./auth')(app);
 
@@ -75,7 +77,7 @@ app.get('/movies/director/:name', passport.authenticate('jwt', {session: false})
 });
 
 // allow new users to register
-app.post('/users', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
@@ -123,7 +125,7 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 });
 
 // allow users to add a movie to their list of favorites
-app.post('/users/:id/favorites/:Movie_ID', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.post('/users/:Username/favorites/:Movie_ID', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username },
     {$push: { FavoriteMovies: req.params.MovieID }},
     { new: true },
@@ -138,7 +140,7 @@ app.post('/users/:id/favorites/:Movie_ID', passport.authenticate('jwt', {session
 });
 
 // allow users to remove a movie form their list of favorites
-app.delete('/users/:id/favorites/:Movie_ID', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.delete('/users/:Username/favorites/:Movie_ID', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username },
     {$push: { FavoriteMovies: req.params.MovieID }},
     { new: true },
@@ -153,7 +155,7 @@ app.delete('/users/:id/favorites/:Movie_ID', passport.authenticate('jwt', {sessi
 });
 
 // allow existing users to deregister
-  app.delete('/users/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
+  app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username }).then((user) => {
       if(!user) {
         res.status(400).send(req.params.Username + ' was not found.');
