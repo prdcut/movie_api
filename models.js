@@ -2,6 +2,8 @@ const express = require("express"),
   morgan = require("morgan"),
   bodyParser = require("body-parser"),
   mongoose = require("mongoose");
+  bcrypt = require('bcrypt');
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -29,6 +31,14 @@ let userSchema = mongoose.Schema ({
   Birthdate: Date,
   FavoriteMovies: [{type: mongoose.Schema.Types.ObjectID, ref: 'Movie'}]
 });
+
+userSchema.statics.hashPassword = (password) => {
+  return bcrypt.hashSync(password, 10);
+};
+
+userSchema.methods.validatePassword = function(password) {
+  return bcrypt.compareSync(password, this.Password);
+};
 
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
