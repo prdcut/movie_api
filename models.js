@@ -1,12 +1,5 @@
-const express = require("express"),
-  morgan = require("morgan"),
-  bodyParser = require("body-parser"),
-  mongoose = require("mongoose");
+const mongoose = require("mongoose");
   bcrypt = require('bcrypt');
-
-const app = express();
-app.use(bodyParser.json());
-
 
 let movieSchema = mongoose.Schema ({
   Title: {type: String, required: true},

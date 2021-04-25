@@ -24,19 +24,7 @@ mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifie
 app.use(morgan(':method :host :url :status :res[content-length] - :response-time ms'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
-
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
+app.use(cors());
 
 let auth = require('./auth')(app);
 
@@ -116,12 +104,12 @@ app.post('/users',
           Users
             .create({
               Username: req.body.Username,
-              Password: req.body.Password,
+              Password: hashedPassword,
               Email: req.body.Email,
               Birthdate: req.body.Birthdate
             })
             .then((user) =>{res.status(201).json(user) })
-          .catch((error) => {
+            .catch((error) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
           })
@@ -139,7 +127,7 @@ app.put('/users/:Username',
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail()
+    check('Email', 'Email does not appear to be valid').isEmail() 
   ],
   passport.authenticate('jwt', {session: false}), (req, res) => {
 
@@ -214,6 +202,7 @@ app.delete('/users/:Username/favorites/:MovieID', passport.authenticate('jwt', {
 
 //Listen for requests
 const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0',() => {
- console.log('Listening on Port ' + port);
+
+app.listen(port,() => {
+ console.log('Listening on Port ${port}');
 });
