@@ -50,7 +50,7 @@ app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) =>
 });
 
 // return data about a sinlge movie by title
-app.get('/movies/:Title', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/movies/:Title',  /*passport.authenticate('jwt', {session: false}),*/ (req, res) => {
   Movies.findOne({Title: req.params.Title}).then((movie) => {
     res.status(201).json(movie);
   }).catch((err) => {
@@ -127,7 +127,7 @@ app.put('/users/:Username',
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail() 
+    check('Email', 'Email does not appear to be valid').isEmail()
   ],
   passport.authenticate('jwt', {session: false}), (req, res) => {
 
