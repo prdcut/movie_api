@@ -80,6 +80,16 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
     });
 });
 
+// return user profile
+app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
+  Users.findOne({Username: req.params.Username}).then((user) => {
+    res.status(201).json(user);
+  }).catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // allow new users to register
 app.post('/users',
   [
