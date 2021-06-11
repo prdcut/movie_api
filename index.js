@@ -91,7 +91,7 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 });
 
 // return user's favorite movies
-app.get('/users/:Username/favorites/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/users/:Username/favorites/', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOne({Username: req.params.FavoriteMovies}).then((user) => {
     res.status(201).json(user);
   }).catch((err) => {
